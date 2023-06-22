@@ -4,15 +4,14 @@
 
 ## 项目依赖
 
-+ 加载时依赖
-  + skill-loader [ [GitHub](https://github.com/yeungchie/skill-loader "https://github.com/yeungchie/skill-loader") / [Gitee](https://gitee.com/yeungchie/skill-loader "https://gitee.com/yeungchie/skill-loader") ]
++ skill-loader [ [GitHub](https://github.com/yeungchie/skill-loader "https://github.com/yeungchie/skill-loader") / [Gitee](https://gitee.com/yeungchie/skill-loader "https://gitee.com/yeungchie/skill-loader") ]
 
 ## 函数
 
-### ycRegEx
+### rex
 
 ```text
-ycRegEx(
+rex(
     S_string
     t_pattern
     [ g_replace ]
@@ -21,27 +20,27 @@ ycRegEx(
 )
 ```
 
-> alias: `rex`
+> alias to `ycRegEx`
 
-### ycRegExSub
+### rexsub
 
 ```text
-ycRegExSub(
+rexsub(
     [ g_bodyString ... ]
     [ ?join t_joinString ]
 )
 ```
 
-> alias: `rexsub`
+> alias to `ycRegExSub`
 
-### ycRegExSplit
+### rexsplit
 
 ```text
-ycRegExSplit(
+rexsplit(
     t_string
     t_pattern
     [ g_options ]
 )
 ```
 
-> alias: `rexsplit`
+> alias to `ycRegExSplit`
