@@ -7,5 +7,6 @@
 alias(rex ycRegEx)
 alias(rexsub ycRegExSub)
 alias(rexsplit ycRegExSplit)
+alias(rexcase ycRegExCase)
 
 ; END
