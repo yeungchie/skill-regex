@@ -2,7 +2,6 @@
 ; Program  : skill-regex(ycRegExSub.il)
 ; Language : Cadence Skill
 ; Author   : YEUNGCHIE
-; Version  : 2023.06.09
 ;--------------------------
 
 procedure(ycRegExSub(\@key join(" ") \@rest body "tl")

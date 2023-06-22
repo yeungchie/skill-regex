@@ -2,7 +2,6 @@
 ; Program  : skill-regex(ycRegExSplit.il)
 ; Language : Cadence Skill
 ; Author   : YEUNGCHIE
-; Version  : 2023.06.09
 ;--------------------------
 
 procedure(ycRegExSplit(str pattern \@optional options "ttg")

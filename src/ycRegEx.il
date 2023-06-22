@@ -2,7 +2,6 @@
 ; Program  : skill-regex(ycRegEx.il)
 ; Language : Cadence Skill
 ; Author   : YEUNGCHIE
-; Version  : 2023.06.09
 ;--------------------------
 
 procedure(ycRegEx(_ycRegEx_str _ycRegEx_pattern \@optional _ycRegEx_replace _ycRegEx_options _ycRegEx_substitute("\\0") "Stggt")
