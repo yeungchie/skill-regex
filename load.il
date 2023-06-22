@@ -2,7 +2,6 @@
 ; Program  : skill-regex(load.il)
 ; Language : Cadence Skill
 ; Author   : YEUNGCHIE
-; Version  : 2023.06.09
 ;--------------------------
 
 ycLoad("src/alias.il")
