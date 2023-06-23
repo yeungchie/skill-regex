@@ -78,7 +78,7 @@ rex( "NET<3:0>" "net" nil "i" )  ; 忽略大小写
 
 ```skill
 rex( "NET<3:0>" "(net)<(\\d):(\\d)>" nil "i" "bus:\\1 high:\\2 low:\\3")
-"bus:NET high:3 low:0"
+; "bus:NET high:3 low:0"
 ```
 
 + 自定义替换逻辑
@@ -124,7 +124,7 @@ rexsub(
 ```skill
 rex( "2023-02-23" "(\\d+)-(\\d+)-(\\d+)" )
 rexsub( 1 2 3 ?join ",")
-"2023,02,23"
+; "2023,02,23"
 ```
 
 ### rexsplit
