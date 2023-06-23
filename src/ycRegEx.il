@@ -15,9 +15,9 @@ procedure(ycRegEx(_ycRegEx_str _ycRegEx_pattern \@optional _ycRegEx_replace _ycR
                 replaceType = type(replace)
             )
             unless(member(replaceType '(string symbol funobj nil))
-                error("%s: if you want to use replace mode, the argument #3 should be a string of replacement, symbol of function name or variable of function object, else nil - %A" app replace)
+                error("%s: if you want to use replace mode, the argument #3 should be either a string of replacement, symbol of function name or variable of function object, else nil - %A" app replace)
             )
-            when((replaceType == 'symbol) && !procedurep(replace)
+            when((replaceType == 'symbol) && !fboundp(replace)
                 error("%s: undefined function - %A" app replace)
             )
 
