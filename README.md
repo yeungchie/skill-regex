@@ -27,7 +27,7 @@ rex(
 ```text
 rexsub(
     [ g_bodyString ... ]
-    [ ?join t_joinString ]
+    [ ?join S_joinString ]
 )
 ```
 
@@ -37,10 +37,25 @@ rexsub(
 
 ```text
 rexsplit(
-    t_string
+    S_string
     t_pattern
     [ g_options ]
 )
 ```
 
 > alias to `ycRegExSplit`
+
+### rexcase
+
+```text
+rexcase(
+    S_string
+    ( t_pattern1 g_body1 )
+    [ ( t_pattern2 g_body2 ) ... ]
+    [ ?replace g_replace ]
+    [ ?options g_options ]
+    [ ?sub t_sub ]
+)
+```
+
+> alias to `ycRegExCase`
