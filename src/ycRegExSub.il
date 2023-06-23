@@ -4,7 +4,7 @@
 ; Author   : YEUNGCHIE
 ;--------------------------
 
-procedure(ycRegExSub(\@key join(" ") \@rest body "tl")
+procedure(ycRegExSub(\@key join(" ") \@rest body "Sl")
     let((strings)
         strings = foreach(mapcar x body
             case(type(x)
