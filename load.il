@@ -9,5 +9,7 @@ ycLoad("src/ycRegEx.il")
 ycLoad("src/ycRegExSub.il")
 ycLoad("src/ycRegExSplit.il")
 ycLoad("src/ycRegExCase.il")
+ycLoad("src/compile/ycGetCompileObject.il")
+ycLoad("src/compile/ycSetCompileObject.il")
 
 ; END

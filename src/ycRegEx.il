@@ -4,10 +4,10 @@
 ; Author   : YEUNGCHIE
 ;--------------------------
 
-procedure(ycRegEx(_ycRegEx_str _ycRegEx_pattern \@optional _ycRegEx_replace _ycRegEx_options _ycRegEx_substitute("\\0") "Stggt")
+procedure(ycRegEx(_ycRegEx_str _ycRegEx_pattern \@optional _ycRegEx_replace _ycRegEx_options _ycRegEx_substitute("\\0") _ycRegEx_dontMapObj "Stggtg")
     let((_ycRegEx_Result _ycRegEx_Params)
-        _ycRegEx_Result = prog((str pattern replace options substitute replaceType cmp index cmpOpt char undef result)
-            foreach(sym '(str pattern replace options substitute)
+        _ycRegEx_Result = prog((str pattern replace options substitute dontMapObj replaceType cmp index cmpOpt char undef result)
+            foreach(sym '(str pattern replace options substitute dontMapObj)
                 set(sym eval(concat("_ycRegEx_" sym)))
             )
             when(replace
@@ -50,6 +50,9 @@ procedure(ycRegEx(_ycRegEx_str _ycRegEx_pattern \@optional _ycRegEx_replace _ycR
             unless(cmp = pcreCompile(pattern cmpOpt)
                 return()
             )
+
+            ycSetCompileObject(pattern cmp)
+
             when(symbolp(str)
                 str = symbolToString(str)
             )
