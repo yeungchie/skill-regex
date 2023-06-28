@@ -44,7 +44,7 @@ procedure(ycRegEx(_ycRegEx_str _ycRegEx_pattern \@optional _ycRegEx_replace _ycR
             )
 
             when(undef
-                ycWarn("%s: skip undefined options char - %s" undef)
+                ycWarn("skip undefined options char - %s" undef)
             )
 
             unless(cmp = pcreCompile(pattern cmpOpt)
