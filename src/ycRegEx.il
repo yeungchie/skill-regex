@@ -6,8 +6,7 @@
 
 procedure(ycRegEx(_ycRegEx_str _ycRegEx_pattern \@optional _ycRegEx_replace _ycRegEx_options _ycRegEx_substitute("\\0") "Stggt")
     let((_ycRegEx_Result _ycRegEx_Params)
-        _ycRegEx_Result = prog((app str pattern replace options substitute replaceType cmp index cmpOpt char undef result)
-            app = getCallingFunction(0)
+        _ycRegEx_Result = prog((str pattern replace options substitute replaceType cmp index cmpOpt char undef result)
             foreach(sym '(str pattern replace options substitute)
                 set(sym eval(concat("_ycRegEx_" sym)))
             )
@@ -15,10 +14,10 @@ procedure(ycRegEx(_ycRegEx_str _ycRegEx_pattern \@optional _ycRegEx_replace _ycR
                 replaceType = type(replace)
             )
             unless(member(replaceType '(string symbol funobj nil))
-                error("%s: if you want to use replace mode, the argument #3 should be either a string of replacement, symbol of function name or variable of function object, else nil - %A" app replace)
+                ycError("if you want to use replace mode, the argument #3 should be either a string of replacement, symbol of function name or variable of function object, else nil - %A" replace)
             )
             when((replaceType == 'symbol) && !fboundp(replace)
-                error("%s: undefined function - %A" app replace)
+                ycError("undefined function - %A" replace)
             )
 
             index = 1
@@ -28,7 +27,7 @@ procedure(ycRegEx(_ycRegEx_str _ycRegEx_pattern \@optional _ycRegEx_replace _ycR
                 (symbol symbolToString(options))
                 (t
                     if(options
-                        error("%s: argument #4 should be a string or a symbol - %A" app options)
+                        ycError("argument #4 should be a string or a symbol - %A" options)
                         ""
                     )
                 )
@@ -45,7 +44,7 @@ procedure(ycRegEx(_ycRegEx_str _ycRegEx_pattern \@optional _ycRegEx_replace _ycR
             )
 
             when(undef
-                warn("%s: skip undefined options char - %s" app undef)
+                ycWarn("%s: skip undefined options char - %s" undef)
             )
 
             unless(cmp = pcreCompile(pattern cmpOpt)
