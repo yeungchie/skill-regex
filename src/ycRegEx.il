@@ -51,7 +51,9 @@ procedure(ycRegEx(_ycRegEx_str _ycRegEx_pattern \@optional _ycRegEx_replace _ycR
                 return()
             )
 
-            ycSetCompileObject(pattern cmp)
+            unless(dontMapObj
+                ycSetCompileObject(pattern cmp)
+            )
 
             when(symbolp(str)
                 str = symbolToString(str)
