@@ -13,7 +13,7 @@
 ```text
 rex(
     S_string
-    t_pattern
+    lt_pattern
     [ g_replace ]
     [ g_options ]
     [ t_substitute ]
@@ -28,14 +28,16 @@ rex(
 
 2. **t_pattern**
     + 正则表达式匹配模式。
-    + 类型限制：*string*
+    + 如果使用多模式替换，需要指定一个包含多个模式的非空列表。
+    + 类型限制：*string, list*
 
 3. **g_replace**
     + 可选项。
     + 如果需要启用替换，则这里指定替换匹配的子串，默认只替换一次。
     + 默认值为 `nil`，不启用替换模式。
     + 如果有更加复杂的替换逻辑，可以指定 symbol 作为函数名，也可以指定一个 lambda 对象（funobj），匹配结束后会继续运行指定的 replace 逻辑函数，并将其返回值作为这次匹配的返回值，函数需要指定一个 dpl 输入参数。
-    + 类型限制：*nil, string, symbol, funobj*
+    + 如果使用多模式替换，需要指定一个包含多个替换逻辑的非空列表。
+    + 类型限制：*nil, string, symbol, funobj, list*
 
 4. **g_options**
     + 可选项。
@@ -104,6 +106,7 @@ rex( "PIN_1<0>" "(PIN)_(\\d)<(\\d)>" 'addNumAndBit )
 rexsub(
     [ g_bodyString  ... ]
     [ ?join  S_joinString ]
+    [ ?pattern  g_patternString ]
 )
 ```
 
@@ -121,6 +124,12 @@ rexsub(
     + 可选项。
     + 作为多个字符串的连接符，默认值为 `" "`。
     + 类型限制：*string*
+
+3. `?pattern` **g_patternString**
+    + 可选项。
+    + 指定为之前匹配过的模式，可以指定返回对应的分组。
+    + 默认值为 `nil`，代表默认使用上一次正则匹配的结果。
+    + 类型限制：*nil, string*
 
 ```lisp
 rex( "2023-02-23" "(\\d+)-(\\d+)-(\\d+)" )
