@@ -26,7 +26,7 @@ rex(
     + 被匹配的字符。
     + 类型限制：*string, symbol*
 
-2. **t_pattern**
+2. **lt_pattern**
     + 正则表达式匹配模式。
     + 如果使用多模式替换，需要指定一个包含多个模式的非空列表。
     + 类型限制：*string, list*
@@ -123,7 +123,7 @@ rexsub(
 2. `?join` **S_joinString**
     + 可选项。
     + 作为多个字符串的连接符，默认值为 `" "`。
-    + 类型限制：*string*
+    + 类型限制：*string, symbol*
 
 3. `?pattern` **g_patternString**
     + 可选项。
@@ -180,17 +180,34 @@ rexcase(
 和 `case` 函数一样的使用格式，只不过判断相等变成判断是否匹配。
 
 ```lisp
-rexcase( "net<3:0>"
-    ( "<\\d+>"
+rexcase( "NET<3:0>"
+    ( "net<\\d+>"
         printf( "This is a single signal in the bus signal\n" )
     )
-    ( "<\\d+:\\d+>"
+    ( "net<\\d+:\\d+>"
+        printf( "This is a set of bus signals\n" )
+    )
+    ( t
+        printf( "This is not a bus signal\n" )
+    )
+    ?options "i"
+)
+; This is a set of bus signals
+; => t
+```
+
+上面的效果等同于：
+
+```lisp
+cond(
+    (rex( "net<3:0>" "<\\d+>" nil "i" )
+        printf( "This is a single signal in the bus signal\n" )
+    )
+    (rex( "net<3:0>" "<\\d+:\\d+>" nil "i" )
         printf( "This is a set of bus signals\n" )
     )
     ( t
         printf( "This is not a bus signal\n" )
     )
 )
-; This is a set of bus signals
-; => t
 ```
