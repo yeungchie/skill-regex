@@ -4,9 +4,12 @@
 ; Author   : YEUNGCHIE
 ;--------------------------
 
-defmacro( ycRegExCase (var body1 \@key replace options sub("\\0") \@rest body)
+defmacro( ycRegExCase (var \@key replace options sub("\\0") \@rest body)
     `prog( nil
-        foreach(_ycRegExCase_var cons(',body1 '(,@body))
+        unless('(,@body)
+            ycError("too few arguments, expression body undefined - %A" list(,var '(,@body)))
+        )
+        foreach(_ycRegExCase_var '(,@body)
             when((car(_ycRegExCase_var) == t)
               || ycRegEx(,var eval(car(_ycRegExCase_var)) ,replace ,options ,sub)
                 return(
