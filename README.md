@@ -149,14 +149,14 @@ rexsub( 1 2 3 ?join ",")
 ```text
 rexsplit(
     S_string
-    t_pattern
+    [ t_pattern ]
     [ g_options ]
 )
 ```
 
 > alias to `ycRegExSplit`
 
-相对于 `parseString` 函数，`rexsplit` 可以利用正则匹配做字符串切片。
+相对于 `parseString` 函数，`rexsplit` 可以利用正则匹配做字符串切片，默认 pattern 为 `"\\s+"`。
 
 ```lisp
 parseString( "A-B--C-D" "--" )
