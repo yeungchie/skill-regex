@@ -187,7 +187,7 @@ rexcase(
 和 `case` 函数一样的使用格式，只不过判断相等变成判断是否匹配。
 
 ```lisp
-rexcase( "NET<3:0>"
+rexcase( "NET<3:0>" ?options "i"
     ( "net<\\d+>"
         printf( "This is a single signal in the bus signal\n" )
     )
@@ -197,7 +197,6 @@ rexcase( "NET<3:0>"
     ( t
         printf( "This is not a bus signal\n" )
     )
-    ?options "i"
 )
 ; This is a set of bus signals
 ; => t
