@@ -4,7 +4,7 @@
 ; Author   : YEUNGCHIE
 ;--------------------------
 
-procedure(ycRegExSplit(str pattern \@optional options "Stg")
+procedure(ycRegExSplit(str \@optional pattern("\\s+") options "Stg")
     cond(
         (ycRegEx("" pattern nil options "\\0" t)
             ; "abc" -//-> ( "a" "b" "c" )
