@@ -13,7 +13,7 @@
 ```text
 rex(
     S_string
-    lt_pattern
+    g_pattern
     [ g_replace ]
     [ g_options ]
     [ t_substitute ]
@@ -26,10 +26,11 @@ rex(
     + 被匹配的字符。
     + 类型限制：*string, symbol*
 
-2. **lt_pattern**
+2. **g_pattern**
     + 正则表达式匹配模式。
-    + 如果使用多模式替换，需要指定一个包含多个模式的非空列表。
-    + 类型限制：*string, list*
+    + 如果使用多模式，需要指定一个包含多个模式的非空列表。当启用多模式且不启用替换模式时，会顺序匹配所有模式直到匹配成功。
+    + 支持当指定为 `t` 时，跳过匹配过程直接返回 `t`。
+    + 类型限制：*string, list, t*
 
 3. **g_replace**
     + 可选项。
@@ -67,11 +68,25 @@ rex( "NET<3:0>" "NET" "ABC" )
 ; => "ABC<3:0>"
 ```
 
++ 多模式匹配
+
+```lisp
+rex( "NET<3:0>"  list("Q" "NET" "ABC") )
+; => "NET"
+```
+
 + 多模式替换
 
 ```lisp
 rex( "NET<3:0>"  list("<" ">")  list("\\[" "\\]") )
 ; => "NET[3:0]"
+```
+
++ 多模式匹配共用一个模式替换
+
+```lisp
+rex( "NET<3:0>"  list("<" ">")  "~" )
+; => "NET~3:0~"
 ```
 
 + 指定条件
@@ -206,10 +221,10 @@ rexcase( "NET<3:0>" ?options "i"
 
 ```lisp
 cond(
-    (rex( "net<3:0>" "<\\d+>" nil "i" )
+    (rex( "NET<3:0>" "net<\\d+>" nil "i" )
         printf( "This is a single signal in the bus signal\n" )
     )
-    (rex( "net<3:0>" "<\\d+:\\d+>" nil "i" )
+    (rex( "NET<3:0>" "net<\\d+:\\d+>" nil "i" )
         printf( "This is a set of bus signals\n" )
     )
     ( t

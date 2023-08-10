@@ -5,17 +5,14 @@
 ;--------------------------
 
 procedure(ycSetCompileObject(pattern object "to")
-    let((hash)
-        unless(tablep(_ycRegEx.objects)
-            _ycRegEx.objects = makeTable("Compile Objects" nil)
-        )
-        unless(pcreObjectp(object)
-            ycError("argument #2 should be a pcreObject - %A" object)
-        )
-        hash = _ycRegEx.objects
-        hash[pattern] = object
-        t
+    unless(tablep(_ycRegEx.objects)
+        _ycRegEx.objects = makeTable("Compile-Objects" nil)
     )
+    unless(pcreObjectp(object)
+        ycError("argument #2 should be a pcreObject - %A" object)
+    )
+    _ycRegEx.objects[pattern] = object
+    t
 )
 
 ; END

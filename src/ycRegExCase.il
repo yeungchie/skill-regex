@@ -4,23 +4,73 @@
 ; Author   : YEUNGCHIE
 ;--------------------------
 
+_ycRegExCase.clauseExtract = lambda((clause)
+    let((patterns expression result)
+        patterns = car(clause)
+        expression = cdr(clause)
+        patterns = if(listp(patterns)
+            ; 列表判断是否可以作为表达式
+            if(symbolp(car(patterns))
+            then
+                ; 表示式
+                result = eval(patterns)
+                unless(listp(result)
+                    result = list(result)
+                )
+                result
+            else
+                ; 非表达式
+                patterns
+            )
+            ; 非列表判断是否可以作为变量
+            if(symbolp(patterns)
+            then
+                ; 变量
+                result = eval(patterns)
+                unless(listp(result)
+                    result = list(result)
+                )
+                result
+            else
+                ; 非变量
+                list(patterns)
+            )
+        )
+        cons(patterns expression)
+    )
+); lambda
+
 defmacro( ycRegExCase (var \@key replace options sub("\\0") \@rest body)
     `prog( nil
         unless('(,@body)
             ycError("too few arguments, expression body undefined - %A" list(,var '(,@body)))
         )
-        foreach(_ycRegExCase_var '(,@body)
-            when((car(_ycRegExCase_var) == t)
-              || ycRegEx(,var eval(car(_ycRegExCase_var)) ,replace ,options ,sub)
-                return(
-                    if(length(_ycRegExCase_var) > 1
-                        car(last(mapcar('eval cdr(_ycRegExCase_var))))
-                        ycRegExSub(,sub)
+        foreach(_ycRegExCase_clause '(,@body)
+            let((_ycRegExCase_result _ycRegExCase_patterns _ycRegExCase_expression)
+                _ycRegExCase_result = funcall(_ycRegExCase.clauseExtract _ycRegExCase_clause)
+                _ycRegExCase_patterns = car(_ycRegExCase_result)
+                _ycRegExCase_expression = cdr(_ycRegExCase_result)
+                case(ycRegEx(,var _ycRegExCase_patterns ,replace ,options ,sub)
+                    ('t
+                        ; 目标 pattern 为 t 直接结束并返回 t
+                        return(t)
+                    )
+                    (nil
+                        ; nil 匹配失败继续下一个 clause
+                    )
+                    (t
+                        ; 匹配成功处理返回值
+                        return(
+                            if(_ycRegExCase_expression
+                                car(last(mapcar('eval _ycRegExCase_expression)))
+                                ycRegExSub(,sub)
+                            )
+                        )
                     )
                 )
-            )
+            ); let
         )
-    )
+    ); prog
 )
 
 ; END

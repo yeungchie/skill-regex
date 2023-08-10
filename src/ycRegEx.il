@@ -12,22 +12,57 @@ procedure(ycRegEx(_ycRegEx_str _ycRegEx_pattern \@optional _ycRegEx_replace _ycR
                 set(sym eval(concat("_ycRegEx_" sym)))
             )
 
-            ; pattern 必须为字符串或非空列表
-            unless(stringp(pattern) || pairp(pattern)
-                ycError("argument #2 should be either a string or a list of non-nil - %A" pattern)
+            ; pattern 为 t 时直接返回 t
+            when(pattern == t
+                return(t)
             )
 
-            when(pairp(pattern) || pairp(replace)
-                ; 多模式替换下 pattern 和 replace 都必须为非空列表，且元素不能为列表
-                unless(pairp(pattern) && pairp(replace) && forall(x append(pattern replace) !listp(x))
-                    ycError("if you want to use multi-pattern-replace mode, argument #2 and #3 both should be a list of non-nil and elements non-list - %A - %A" pattern replace)
+            ; pattern 必须为字符串或非空列表
+            unless(stringp(pattern) || pairp(pattern)
+                ycError("argument #2 should be either a string or a list of non-nil or t - %A" pattern)
+            )
+
+            ; 模式检测
+            cond(
+                (stringp(pattern) && !replace
+                    ; 单模式匹配
+                    t
                 )
-                let((_ycRegEx_last)
-                    _ycRegEx_last = str
-                    foreach((p r) pattern replace
-                        _ycRegEx_last = ycRegEx(_ycRegEx_last p r options substitute dontMapObj)
+                (stringp(pattern) && !listp(replace)
+                    ; 单模式替换
+                    t
+                )
+                (pairp(pattern) && !replace
+                    ; 多模式匹配
+                    foreach(p pattern
+                        when(_ycRegEx_Result = ycRegEx(str p nil options substitute dontMapObj)
+                            return(_ycRegEx_Result)
+                        )
                     )
-                    return(_ycRegEx_last)
+                    return()
+                )
+                (pairp(pattern) && pairp(replace)
+                    ; 多模式替换
+                    let((_ycRegEx_last)
+                        _ycRegEx_last = str
+                        foreach((p r) pattern replace
+                            _ycRegEx_last = ycRegEx(_ycRegEx_last p r options substitute dontMapObj)
+                        )
+                        return(_ycRegEx_last)
+                    )
+                )
+                (pairp(pattern) && !pairp(replace)
+                    ; 多模式单替换
+                    let((_ycRegEx_last)
+                        _ycRegEx_last = str
+                        foreach(p pattern
+                            _ycRegEx_last = ycRegEx(_ycRegEx_last p replace options substitute dontMapObj)
+                        )
+                        return(_ycRegEx_last)
+                    )
+                )
+                (t
+                    ycError("if you want to use multi-pattern mode, argument #2 should be a list of non-nil and elements non-list - %A" pattern)
                 )
             )
 
@@ -57,9 +92,10 @@ procedure(ycRegEx(_ycRegEx_str _ycRegEx_pattern \@optional _ycRegEx_replace _ycR
                 char = getchar(options i)
                 case(char
                     (" "    t)
-                    (g      index = 0)
-                    (i      cmpOpt = cmpOpt | pcreGenCompileOptBits(?caseLess  t))
-                    (m      cmpOpt = cmpOpt | pcreGenCompileOptBits(?multiLine t))
+                    (g      index = 0)                                              ; 全局匹配
+                    (i      cmpOpt = cmpOpt | pcreGenCompileOptBits(?caseLess  t))  ; 忽略英文大小写
+                    (s      cmpOpt = cmpOpt | pcreGenCompileOptBits(?dotAll    t))  ; 单行匹配
+                    (m      cmpOpt = cmpOpt | pcreGenCompileOptBits(?multiLine t))  ; 多行匹配
                     (t      undef = strcat(undef || "" char))
                 )
             )

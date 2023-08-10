@@ -5,9 +5,7 @@
 ;--------------------------
 
 procedure(ycGetCompileObject(pattern "t")
-    let((obj)
-        (hash = _ycRegEx.objects) && pcreObjectp(obj = hash[pattern]) && obj
-    )
+    _ycRegEx.objects && pcreObjectp(_ycRegEx.objects[pattern]) && _ycRegEx.objects[pattern]
 )
 
 ; END
