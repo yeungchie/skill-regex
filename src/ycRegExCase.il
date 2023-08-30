@@ -51,10 +51,6 @@ defmacro( ycRegExCase (var \@key replace options sub("\\0") \@rest body)
                 _ycRegExCase_patterns = car(_ycRegExCase_result)
                 _ycRegExCase_expression = cdr(_ycRegExCase_result)
                 case(ycRegEx(,var _ycRegExCase_patterns ,replace ,options ,sub)
-                    ('t
-                        ; 目标 pattern 为 t 直接结束并返回 t
-                        return(t)
-                    )
                     (nil
                         ; nil 匹配失败继续下一个 clause
                     )
