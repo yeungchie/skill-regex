@@ -40,7 +40,7 @@ _ycRegExCase.clauseExtract = lambda((clause)
     )
 ); lambda
 
-defmacro( ycRegExCase (var \@key replace options sub("\\0") \@rest body)
+defmacro( ycRegExCase (var \@key options sub("\\0") \@rest body)
     `prog( nil
         unless('(,@body)
             ycError("too few arguments, expression body undefined - %A" list(,var '(,@body)))
@@ -50,7 +50,7 @@ defmacro( ycRegExCase (var \@key replace options sub("\\0") \@rest body)
                 _ycRegExCase_result = funcall(_ycRegExCase.clauseExtract _ycRegExCase_clause)
                 _ycRegExCase_patterns = car(_ycRegExCase_result)
                 _ycRegExCase_expression = cdr(_ycRegExCase_result)
-                case(ycRegEx(,var _ycRegExCase_patterns ,replace ,options ,sub)
+                case(ycRegEx(,var _ycRegExCase_patterns nil ,options ,sub)
                     (nil
                         ; nil 匹配失败继续下一个 clause
                     )

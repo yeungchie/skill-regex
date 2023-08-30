@@ -191,7 +191,6 @@ rexcase(
     S_string
     ( t_pattern1  [ g_body1 ] )
     [ ( t_pattern2  [ g_body2 ] )  ... ]
-    [ ?replace  g_replace ]
     [ ?options  g_options ]
     [ ?sub  t_substitute ]
 )
