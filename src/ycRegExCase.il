@@ -54,6 +54,15 @@ defmacro( ycRegExCase (var \@key options sub("\\0") \@rest body)
                     (nil
                         ; nil 匹配失败继续下一个 clause
                     )
+                    ('t
+                        ; 目标 pattern 为 t
+                        return(
+                            if(_ycRegExCase_expression
+                                car(last(mapcar('eval _ycRegExCase_expression)))
+                                ,var    ; 空表达式时返回原字符串
+                            )
+                        )
+                    )
                     (t
                         ; 匹配成功处理返回值
                         return(
