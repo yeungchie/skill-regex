@@ -5,12 +5,13 @@
 ;--------------------------
 
 defmacro( ycRegExCase (var \@key options sub("\\0") \@rest body)
-    `prog( nil
-        unless('(,@body)
-            ycError("too few arguments, expression body undefined - %A" list(,var '(,@body)))
+    `let((_ycRegExCase_clauses _ycRegExCase_clause _ycRegExCase_return)
+        unless(_ycRegExCase_clauses = '(,@body)
+            ycError("too few arguments, expression body undefined - %A" list(,var _ycRegExCase_clauses))
         )
-        foreach(_ycRegExCase_clause '(,@body)
-            let((_ycRegExCase_result _ycRegExCase_patterns _ycRegExCase_expression)
+        ; foreach(_ycRegExCase_clause _ycRegExCase_clauses
+        while(_ycRegExCase_clause = car(_ycRegExCase_clauses)
+            let((_ycRegExCase_result _ycRegExCase_patterns _ycRegExCase_expression _ycRegExCase_last)
                 _ycRegExCase_result = funcall(_ycRegExCase.clauseExtract _ycRegExCase_clause)
                 _ycRegExCase_patterns = car(_ycRegExCase_result)
                 _ycRegExCase_expression = cdr(_ycRegExCase_result)
@@ -20,26 +21,27 @@ defmacro( ycRegExCase (var \@key options sub("\\0") \@rest body)
                     )
                     ('t
                         ; 目标 pattern 为 t
-                        return(
-                            if(_ycRegExCase_expression
-                                car(last(mapcar('eval _ycRegExCase_expression)))
-                                ,var    ; 空表达式时返回原字符串
-                            )
+                        _ycRegExCase_return = if(_ycRegExCase_expression
+                            car(last(mapcar('eval _ycRegExCase_expression)))
+                            ,var    ; 空表达式时返回原字符串
                         )
                     )
                     (t
                         ; 匹配成功处理返回值
-                        return(
-                            if(_ycRegExCase_expression
-                                car(last(mapcar('eval _ycRegExCase_expression)))
-                                ycRegExSub(,sub)
-                            )
+                        _ycRegExCase_return = if(_ycRegExCase_expression
+                            car(last(mapcar('eval _ycRegExCase_expression)))
+                            ycRegExSub(,sub)
                         )
                     )
                 )
+                _ycRegExCase_clauses = if(_ycRegExCase_last
+                    nil
+                    cdr(_ycRegExCase_clauses)
+                )
             ); let
         )
-    ); prog
+        _ycRegExCase_return
+    ); let
 )
 
 _ycRegExCase.clauseExtract = lambda((clause)
