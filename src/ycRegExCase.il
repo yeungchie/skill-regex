@@ -4,42 +4,6 @@
 ; Author   : YEUNGCHIE
 ;--------------------------
 
-_ycRegExCase.clauseExtract = lambda((clause)
-    let((patterns expression result)
-        patterns = car(clause)
-        expression = cdr(clause)
-        patterns = if(listp(patterns)
-            ; 列表判断是否可以作为表达式
-            if(symbolp(car(patterns))
-            then
-                ; 表示式
-                result = eval(patterns)
-                unless(listp(result)
-                    result = list(result)
-                )
-                result
-            else
-                ; 非表达式
-                patterns
-            )
-            ; 非列表判断是否可以作为变量
-            if(symbolp(patterns)
-            then
-                ; 变量
-                result = eval(patterns)
-                unless(listp(result)
-                    result = list(result)
-                )
-                result
-            else
-                ; 非变量
-                list(patterns)
-            )
-        )
-        cons(patterns expression)
-    )
-); lambda
-
 defmacro( ycRegExCase (var \@key options sub("\\0") \@rest body)
     `prog( nil
         unless('(,@body)
@@ -77,5 +41,41 @@ defmacro( ycRegExCase (var \@key options sub("\\0") \@rest body)
         )
     ); prog
 )
+
+_ycRegExCase.clauseExtract = lambda((clause)
+    let((patterns expression result)
+        patterns = car(clause)
+        expression = cdr(clause)
+        patterns = if(listp(patterns)
+            ; 列表判断是否可以作为表达式
+            if(symbolp(car(patterns))
+            then
+                ; 表示式
+                result = eval(patterns)
+                unless(listp(result)
+                    result = list(result)
+                )
+                result
+            else
+                ; 非表达式
+                patterns
+            )
+            ; 非列表判断是否可以作为变量
+            if(symbolp(patterns)
+            then
+                ; 变量
+                result = eval(patterns)
+                unless(listp(result)
+                    result = list(result)
+                )
+                result
+            else
+                ; 非变量
+                list(patterns)
+            )
+        )
+        cons(patterns expression)
+    )
+); lambda
 
 ; END
