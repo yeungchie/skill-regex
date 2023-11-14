@@ -21,6 +21,7 @@ defmacro( ycRegExCase (var \@key options sub("\\0") \@rest body)
                     )
                     ('t
                         ; 目标 pattern 为 t
+                        _ycRegExCase_last = t
                         _ycRegExCase_return = if(_ycRegExCase_expression
                             car(last(mapcar('eval _ycRegExCase_expression)))
                             ,var    ; 空表达式时返回原字符串
@@ -28,6 +29,7 @@ defmacro( ycRegExCase (var \@key options sub("\\0") \@rest body)
                     )
                     (t
                         ; 匹配成功处理返回值
+                        _ycRegExCase_last = t
                         _ycRegExCase_return = if(_ycRegExCase_expression
                             car(last(mapcar('eval _ycRegExCase_expression)))
                             ycRegExSub(,sub)
