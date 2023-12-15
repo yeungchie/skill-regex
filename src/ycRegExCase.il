@@ -4,7 +4,7 @@
 ; Author   : YEUNGCHIE
 ;--------------------------
 
-defmacro( ycRegExCase (var \@key options sub("\\0") \@rest body)
+defmacro( ycRegExCase (var \@key options sub("\\0") dontMapObj \@rest body)
     `let((_ycRegExCase_clauses _ycRegExCase_clause _ycRegExCase_return)
         unless(_ycRegExCase_clauses = '(,@body)
             ycError("too few arguments, expression body undefined - %A" list(,var _ycRegExCase_clauses))
@@ -15,7 +15,7 @@ defmacro( ycRegExCase (var \@key options sub("\\0") \@rest body)
                 _ycRegExCase_result = funcall(_ycRegExCase.clauseExtract _ycRegExCase_clause)
                 _ycRegExCase_patterns = car(_ycRegExCase_result)
                 _ycRegExCase_expression = cdr(_ycRegExCase_result)
-                case(ycRegEx(,var _ycRegExCase_patterns nil ,options ,sub)
+                case(ycRegEx(,var _ycRegExCase_patterns nil ,options ,sub ,dontMapObj)
                     (nil
                         ; nil 匹配失败继续下一个 clause
                     )
