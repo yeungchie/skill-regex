@@ -1,10 +1,10 @@
 ;--------------------------
-; Program  : skill-regex(compile/ycSetCompileObject.il)
+; Program  : skill-regex(compile/set.il)
 ; Language : Cadence Skill
 ; Author   : YEUNGCHIE
 ;--------------------------
 
-procedure(ycSetCompileObject(pattern object "to")
+procedure(ycRegExSetCompileObject(pattern object "to")
     unless(tablep(_ycRegEx.objects)
         _ycRegEx.objects = makeTable("Compile-Objects" nil)
     )

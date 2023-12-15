@@ -1,10 +1,10 @@
 ;--------------------------
-; Program  : skill-regex(compile/ycGetCompileObject.il)
+; Program  : skill-regex(compile/get.il)
 ; Language : Cadence Skill
 ; Author   : YEUNGCHIE
 ;--------------------------
 
-procedure(ycGetCompileObject(pattern "t")
+procedure(ycRegExGetCompileObject(pattern "t")
     _ycRegEx.objects && pcreObjectp(_ycRegEx.objects[pattern]) && _ycRegEx.objects[pattern]
 )
 

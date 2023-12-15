@@ -109,7 +109,7 @@ procedure(ycRegEx(_ycRegEx_str _ycRegEx_pattern \@optional _ycRegEx_replace _ycR
             )
 
             unless(dontMapObj
-                ycSetCompileObject(pattern cmp)
+                ycRegExSetCompileObject(pattern cmp)
             )
 
             when(symbolp(str)
